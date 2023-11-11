@@ -61,4 +61,11 @@ class Authentication {
     _controller.add(user);
     _user = user;
   }
+
+  Future<void> signOut() async {
+    prefs.remove(ConstantPreferences.STORED_USER);
+    _controller.add(null);
+    _user = null;
+    return;
+  }
 }
