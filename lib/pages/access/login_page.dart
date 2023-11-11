@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
           )
         : LayoutBuilder(builder: (_, constraints) {
             return AppRaisedButton(
-              width: constraints.maxWidth / 3,
+              width: 2 * constraints.maxWidth / 5,
               labelText: 'Entrar',
               onPressed: _submit,
             );

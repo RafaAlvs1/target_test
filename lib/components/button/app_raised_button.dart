@@ -33,8 +33,12 @@ class AppRaisedButton extends StatelessWidget {
             )
           : ElevatedButton(
               onPressed: onPressed,
-              style: TextButton.styleFrom(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16.0,
+                ),
                 backgroundColor: color,
+                shape: const StadiumBorder(),
               ),
               child: _buildChild(),
             ),
@@ -63,7 +67,7 @@ class AppRaisedButton extends StatelessWidget {
 
   Widget _buildText(String labelText) {
     return Text(
-      labelText.toUpperCase(),
+      labelText,
       style: AppButtonTheme.styleRaisedButton,
     );
   }

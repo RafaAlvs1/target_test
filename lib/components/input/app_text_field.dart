@@ -54,36 +54,55 @@ class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: margin ?? const EdgeInsets.only(bottom: 16.0),
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        textInputAction: textInputAction ?? TextInputAction.next,
-        obscureText: obscureText ?? false,
-        inputFormatters: inputFormatters,
-        onTap: onTap,
-        readOnly: readOnly || onTap != null,
-        autovalidateMode: autovalidate,
-        maxLines: maxLines,
-        textCapitalization: textCapitalization ?? TextCapitalization.sentences,
-        decoration: InputDecoration(
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          filled: true,
-          fillColor: Colors.white,
-          border: defaultBorder ? null : InputBorder.none,
-          errorBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.red),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (labelText != null)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              child: Text(
+                labelText!,
+                style: InputTheme.labelStyle,
+              ),
+            ),
+          TextFormField(
+            controller: controller,
+            keyboardType: keyboardType,
+            textInputAction: textInputAction ?? TextInputAction.next,
+            obscureText: obscureText ?? false,
+            inputFormatters: inputFormatters,
+            onTap: onTap,
+            readOnly: readOnly || onTap != null,
+            autovalidateMode: autovalidate,
+            maxLines: maxLines,
+            textCapitalization: textCapitalization ?? TextCapitalization.sentences,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: EdgeInsets.zero,
+              border: defaultBorder
+                  ? null
+                  : OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+              errorBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.red),
+              ),
+              errorMaxLines: 2,
+              suffixIcon: _buildIcon(suffixIcon),
+              prefixIcon: _buildIcon(prefixIcon),
+              enabled: enabled ?? true,
+            ),
+            validator: !required
+                ? null
+                : (onValidator ??
+                    (value) => (value?.isEmpty ?? true) ? InputTheme.messageRequired : null),
+            onChanged: onChanged,
+            onFieldSubmitted: onFieldSubmitted,
           ),
-          errorMaxLines: 2,
-          labelText: labelText,
-          hintText: placeholder,
-          suffixIcon: _buildIcon(suffixIcon),
-          prefixIcon: _buildIcon(prefixIcon),
-          enabled: enabled ?? true,
-        ),
-        validator:
-            !required ? null : (onValidator ?? (value) => (value?.isEmpty ?? true) ? InputTheme.messageRequired : null),
-        onChanged: onChanged,
-        onFieldSubmitted: onFieldSubmitted,
+        ],
       ),
     );
   }
@@ -96,7 +115,8 @@ class AppTextField extends StatelessWidget {
     if (icon.runtimeType == IconData) {
       return Icon(
         icon,
-        color: Colors.black12,
+        size: 20.0,
+        color: Colors.black87,
       );
     }
 
@@ -105,7 +125,8 @@ class AppTextField extends StatelessWidget {
       return IconButton(
         icon: Icon(
           (iconButton.icon as Icon).icon,
-          color: Colors.black12,
+          size: 20.0,
+          color: Colors.black87,
         ),
         onPressed: iconButton.onPressed,
       );

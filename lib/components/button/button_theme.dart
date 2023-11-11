@@ -10,8 +10,7 @@ class AppButtonTheme {
   );
 
   static TextStyle styleRaisedButton = const TextStyle(
-    fontSize: 14.0,
-    fontWeight: FontWeight.w900,
+    fontSize: 16.0,
     letterSpacing: 1.0,
   );
 }
