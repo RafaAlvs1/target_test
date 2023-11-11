@@ -64,6 +64,7 @@ class Authentication {
 
   Future<void> signOut() async {
     prefs.remove(ConstantPreferences.STORED_USER);
+    prefs.remove(ConstantPreferences.STORED_TODOS);
     _controller.add(null);
     _user = null;
     return;

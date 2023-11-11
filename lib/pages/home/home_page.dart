@@ -57,6 +57,8 @@ class TodoListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final list = Provider.of<TodoList>(context);
 
+    list.init();
+
     return Expanded(
       child: Material(
         color: Colors.white,
