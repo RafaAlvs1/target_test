@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:target_test/components/button/app_text_button.dart';
+import 'package:target_test/components/container/app_scaffold.dart';
 import 'package:target_test/components/dialog/app_alert_modal.dart';
 import 'package:target_test/components/dialog/app_modal_button.dart';
 import 'package:target_test/components/input/app_text_field.dart';
@@ -15,18 +16,16 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider<TodoList>(
       create: (_) => TodoList(),
-      child: Scaffold(
+      child: AppScaffold(
         bottomNavigationBar: _buildPrivacyPolicy(),
-        body: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-            child: Column(
-              children: <Widget>[
-                const TodoListView(),
-                const SizedBox(height: 32.0),
-                AddTodo(),
-              ],
-            ),
+        body: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+          child: Column(
+            children: <Widget>[
+              const TodoListView(),
+              const SizedBox(height: 32.0),
+              AddTodo(),
+            ],
           ),
         ),
       ),

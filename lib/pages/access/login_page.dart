@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:target_test/components/button/app_raised_button.dart';
 import 'package:target_test/components/button/app_text_button.dart';
+import 'package:target_test/components/container/app_scaffold.dart';
 import 'package:target_test/components/input/app_password_text_field.dart';
 import 'package:target_test/components/input/app_user_text_field.dart';
 import 'package:target_test/services/authentication.dart';
@@ -27,20 +28,18 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  _buildForm(),
-                  const SizedBox(height: 8),
-                  _buildSubmit(),
-                ],
-              ),
+    return AppScaffold(
+      body: Center(
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                _buildForm(),
+                const SizedBox(height: 8),
+                _buildSubmit(),
+              ],
             ),
           ),
         ),
