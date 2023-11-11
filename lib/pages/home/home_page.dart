@@ -14,6 +14,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = Authentication().currentUser;
+
     return Provider<TodoList>(
       create: (_) => TodoList(),
       child: AppScaffold(
@@ -22,6 +24,19 @@ class HomePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
           child: Column(
             children: <Widget>[
+              Column(
+                children: [
+                  Text(
+                    'Usuário: ${user?.nome}',
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 16.0),
               const TodoListView(),
               const SizedBox(height: 32.0),
               AddTodo(),
