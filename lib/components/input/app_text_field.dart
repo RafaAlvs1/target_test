@@ -87,8 +87,9 @@ class AppTextField extends StatelessWidget {
                       borderSide: BorderSide.none,
                       borderRadius: BorderRadius.circular(8.0),
                     ),
-              errorBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.red),
+              errorBorder:  OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.red),
+                borderRadius: BorderRadius.circular(8.0),
               ),
               errorMaxLines: 2,
               suffixIcon: _buildIcon(suffixIcon),

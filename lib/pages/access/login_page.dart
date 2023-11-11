@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:target_test/components/button/app_raised_button.dart';
 import 'package:target_test/components/button/app_text_button.dart';
 import 'package:target_test/components/input/app_password_text_field.dart';
-import 'package:target_test/components/input/user_text_field.dart';
+import 'package:target_test/components/input/app_user_text_field.dart';
+import 'package:target_test/services/authentication.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -100,7 +102,31 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _submit() {}
+  bool _validateAndSave() {
+    final form = _formKey.currentState!;
+    return form.validate();
+  }
 
-  _privacyPolicy() {}
+  _submit() async {
+    if (_validateAndSave()) {
+      FocusScope.of(context).requestFocus(FocusNode());
+      setState(() => _loading = true);
+
+      try {
+        await Authentication().signIn(
+          email: _email,
+          password: _password,
+        );
+      } catch (error) {}
+
+      setState(() => _loading = false);
+    }
+  }
+
+  _privacyPolicy() {
+    launchUrl(
+      Uri.parse('https://www.google.com.br/'),
+      mode: LaunchMode.externalApplication,
+    );
+  }
 }

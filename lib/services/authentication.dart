@@ -43,5 +43,22 @@ class Authentication {
   signIn({
     required String email,
     required String password,
-  }) async {}
+  }) async {
+    await Future.delayed(const Duration(seconds: 2));
+    final map = {
+      'id': '1000',
+      'nome': 'TESTE',
+      'email': email,
+      'token': '#####',
+    };
+
+    await prefs.setString(
+      ConstantPreferences.STORED_USER,
+      json.encode(map),
+    );
+
+    final user = User.fromMap(map);
+    _controller.add(user);
+    _user = user;
+  }
 }

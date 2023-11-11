@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:target_test/components/input/app_text_field.dart';
+import 'package:target_test/components/input/app_text_field_helper.dart';
+
+const LABEL_TEXT_FIELD = 'Senha';
 
 class AppPasswordTextField extends StatelessWidget {
-  final TextEditingController? controller;
-  final String? labelText;
-  final String? placeholder;
-  final TextInputAction? textInputAction;
   final void Function(String)? onChanged;
   final void Function(String)? onFieldSubmitted;
-  final String? Function(String?)? onValidator;
 
   AppPasswordTextField({
     Key? key,
-    this.controller,
-    this.labelText,
-    this.placeholder,
     this.onChanged,
     this.onFieldSubmitted,
-    this.textInputAction,
-    this.onValidator,
   }) : super(key: key);
 
   final ValueNotifier<bool> _isPasswordVisible = ValueNotifier<bool>(false);
@@ -29,19 +23,14 @@ class AppPasswordTextField extends StatelessWidget {
       valueListenable: _isPasswordVisible,
       builder: (_, value, child) {
         return AppTextField(
-          controller: controller,
-          labelText: labelText ?? 'Senha',
-          placeholder: placeholder,
-          textInputAction: textInputAction ?? (onFieldSubmitted != null ? TextInputAction.done : null),
+          labelText: LABEL_TEXT_FIELD,
+          textInputAction: TextInputAction.done,
           onChanged: onChanged,
+          inputFormatters: [
+            PhoneMaskInputFormatter(),
+          ],
           onFieldSubmitted: onFieldSubmitted,
-          onValidator: onValidator ??
-              (String? value) {
-                if (value == null || value.isEmpty) {
-                  return "Senha não pode estar vazio";
-                }
-                return null;
-              },
+          onValidator: PhoneMaskInputFormatter.onValidator,
           obscureText: !value,
           prefixIcon: Icons.lock_rounded,
           suffixIcon: IconButton(
@@ -50,6 +39,49 @@ class AppPasswordTextField extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class PhoneMaskInputFormatter extends TextInputFormatter {
+  final translator = RegExp(r'[0-9a-zA-Z]');
+  final mask = '00000000000000000000';
+
+  static String? Function(String?) onValidator = (value) {
+    if (value == null || value.isEmpty) {
+      return "$LABEL_TEXT_FIELD não pode estar vazio";
+    }
+    if (value.length < 3) {
+      return "$LABEL_TEXT_FIELD não pode ter menos que 2 caracteres";
+    }
+    if (value.length > 20) {
+      return "$LABEL_TEXT_FIELD não pode ultrapassar 20 caracteres";
+    }
+    if (value.endsWith(' ')) {
+      return "$LABEL_TEXT_FIELD não pode terminar com espaço";
+    }
+
+    return null;
+  };
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.selection.baseOffset == 0) {
+      return newValue;
+    }
+
+    final String valueMasked = AppTextFieldHelper.applyMask(
+      value: newValue.text,
+      mask: mask,
+      translator: translator,
+    );
+
+    return TextEditingValue(
+      text: valueMasked,
+      selection: TextSelection.collapsed(offset: valueMasked.length),
     );
   }
 }
