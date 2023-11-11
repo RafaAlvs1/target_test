@@ -6,12 +6,14 @@ class AppTextButton extends StatelessWidget {
   final String labelText;
   final double? width;
   final VoidCallback? onPressed;
+  final Color? color;
 
   const AppTextButton({
     Key? key,
     required this.labelText,
     this.width,
     this.onPressed,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,9 @@ class AppTextButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           labelText,
-          style: AppButtonTheme.styleTextButton,
+          style: AppButtonTheme.styleTextButton.merge(TextStyle(
+            color: color,
+          )),
         ),
       ),
     );

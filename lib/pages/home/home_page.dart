@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:target_test/components/button/app_text_button.dart';
+import 'package:target_test/components/dialog/app_alert_modal.dart';
+import 'package:target_test/components/dialog/app_modal_button.dart';
 import 'package:target_test/components/input/app_text_field.dart';
 import 'package:target_test/models/todo/todo_list.dart';
 import 'package:target_test/services/authentication.dart';
@@ -85,7 +87,23 @@ class TodoListView extends StatelessWidget {
                                   Icons.cancel,
                                   color: Colors.red,
                                 ),
-                                onPressed: () => list.removeTodo(todo),
+                                onPressed: () {
+                                  AppAlertModal.open(
+                                    context: context,
+                                    description: 'Deseja continuar e remover o texto?',
+                                    actions: [
+                                      DialogModalButton.close(context),
+                                      DialogModalButton(
+                                        labelText: 'Continuar',
+                                        color: Colors.red,
+                                        onPressed: () {
+                                          list.removeTodo(todo);
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  );
+                                },
                               )
                             ],
                           ),
@@ -119,6 +137,13 @@ class AddTodo extends StatelessWidget {
       controller: _textController,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (String value) {
+        if (value.isEmpty) {
+          AppAlertModal.open(
+            context: context,
+            description: 'Texto está vazio',
+          );
+          return;
+        }
         list.addTodo(value);
         _textController.clear();
       },
